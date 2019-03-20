@@ -1,4 +1,6 @@
-
+close all;
+clear all;
+clc;
 
 % Parameters
 R1 = 1;
@@ -39,11 +41,12 @@ C(5,:)=[0 0 0 0 0 0];
 G(6,:)=[0 -1 1 0 0 0]; 
 C(6,:)=[0 0 0 0 0 L1]; 
 
+
+
+%% Part b
 numsteps=20;
 Data=zeros(3,numsteps);
 Data(1,:)=linspace(-10,10,numsteps);
-
-%% set F
 for ii=1:numsteps
     % omega=0 for DC
     F=[Data(1,ii); 0; 0; 0; 0; 0];
@@ -52,10 +55,39 @@ for ii=1:numsteps
     Data(3,ii)=V(3);
 end
 
-
 figure(1)
 hold on;
 plot(Data(1,:),Data(2,:));
 plot(Data(1,:),Data(3,:));
 hold off;
 legend('V_O','V_3');
+
+
+%% Part c
+numsteps=2000;
+Data2=zeros(2,numsteps);
+Data2(1,:)=linspace(0,500,numsteps);
+Vin=1;
+for ii=1:numsteps
+    % omega=0 for DC
+    omega=Data2(1,ii);
+    F=[1; 0; 0; 0; 0; 0];
+    V=(G+1j*omega*C)\F;
+    Data2(2,ii)=V(5);
+    %Data2(3,ii)=Data2(2,ii)/Data2(1,ii);
+end
+
+figure(2)
+hold on;
+plot(Data2(1,:),Data2(2,:));
+%plot(Data(1,:),Data(3,:));
+hold off;
+legend('V_O','V_3');
+
+% figure(3)
+% hold on;
+% semilog(Data2(1,:),Data2(2,:)/Vin);
+% %plot(Data(1,:),Data(3,:));
+% hold off;
+% legend('V_O','V_3');
+
