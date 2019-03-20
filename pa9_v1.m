@@ -38,3 +38,24 @@ C(5,:)=[0 0 0 0 0 0];
 %% V6
 G(6,:)=[0 -1 1 0 0 0]; 
 C(6,:)=[0 0 0 0 0 L1]; 
+
+numsteps=20;
+Data=zeros(3,numsteps);
+Data(1,:)=linspace(-10,10,numsteps);
+
+%% set F
+for ii=1:numsteps
+    % omega=0 for DC
+    F=[Data(1,ii); 0; 0; 0; 0; 0];
+    V=G\F;
+    Data(2,ii)=V(5);
+    Data(3,ii)=V(3);
+end
+
+
+figure(1)
+hold on;
+plot(Data(1,:),Data(2,:));
+plot(Data(1,:),Data(3,:));
+hold off;
+legend('V_O','V_3');
