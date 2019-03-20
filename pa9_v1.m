@@ -61,6 +61,9 @@ plot(Data(1,:),Data(2,:));
 plot(Data(1,:),Data(3,:));
 hold off;
 legend('V_O','V_3');
+title('Figure 1: Voltage as a Function of Input Voltage');
+ylabel('Voltage (V)');
+xlabel('V_i (V)');
 
 
 %% Part c
@@ -71,23 +74,42 @@ Vin=1;
 for ii=1:numsteps
     % omega=0 for DC
     omega=Data2(1,ii);
-    F=[1; 0; 0; 0; 0; 0];
+    F=[Vin; 0; 0; 0; 0; 0];
     V=(G+1j*omega*C)\F;
     Data2(2,ii)=V(5);
     %Data2(3,ii)=Data2(2,ii)/Data2(1,ii);
 end
 
 figure(2)
-hold on;
 plot(Data2(1,:),Data2(2,:));
-%plot(Data(1,:),Data(3,:));
-hold off;
-legend('V_O','V_3');
+title('Figure 2: Output Voltage as a Function of Angular Frequency');
+legend('V_O')
+ylabel('V_O (V)');
+xlabel('\omega (radians/s)');
 
-% figure(3)
-% hold on;
-% semilog(Data2(1,:),Data2(2,:)/Vin);
-% %plot(Data(1,:),Data(3,:));
-% hold off;
-% legend('V_O','V_3');
+figure(3)
+semilogx(Data2(1,:),20*log10(Data2(2,:)./Vin));
+title('Figure 3: Gain as a Function of Angular Frequency');
+legend('dB(V_O/V_i)');
+ylabel('Gain (dB)')
+xlabel('\omega (radians/s)');
 
+
+%% Part d
+Vin=1;
+omega=pi;
+count=10000;
+Data3=zeros(1,count);
+for ii=1:count
+    C2=C1+randn()*0.05;
+    C(2,:)=[-C2 +C2 0 0 0 0];
+    F=[Vin; 0; 0; 0; 0; 0];
+    V=(G+1j*omega*C)\F;
+    Data3(1,ii)=V(5);
+end
+
+figure(4);
+hist(real(Data3),50);
+title('Figure 4: Gain for perturbations in C');
+ylabel('Count')
+xlabel('Gain');
